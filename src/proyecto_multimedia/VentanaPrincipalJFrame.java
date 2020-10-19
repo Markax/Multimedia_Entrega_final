@@ -20,417 +20,430 @@ import javax.imageio.ImageIO;
 
 public class VentanaPrincipalJFrame extends javax.swing.JFrame {
 
-    // Variables necesarias para la configuración de la webcam
-    private Webcam cam;
-    private Dimension cs;
-    private WebcamPanel wcPanel;
-    private boolean recording;
-    private final Ajustes ajustes;
-    private DeteccionMovimientoJFrame DMovimiento;
-    private DetectMotion deteccionMovimiento;
-    boolean movimientoDetectado;
-    boolean fps;
-    boolean stats;
-    boolean reconfigurar;
+	// Variables necesarias para la configuración de la webcam
+	private Webcam cam;
+	private Dimension cs;
+	private WebcamPanel wcPanel;
+	private boolean recording;
+	private final Ajustes ajustes;
+	private DeteccionMovimientoJFrame DMovimiento;
+	private DetectMotion deteccionMovimiento;
+	boolean movimientoDetectado;
+	boolean fps;
+	boolean stats;
+	boolean reconfigurar;
 
-    //Variable para crear videos
-    private hiloVideo hiloDeVideo;
+	// Variable para crear videos
+	private hiloVideo hiloDeVideo;
 
-    //Variable para cambiar el formato en el que se guardará la captura (foto)
-    private String formatoImagen;
+	// Variable para cambiar el formato en el que se guardará la captura (foto)
+	private String formatoImagen;
 
-    public VentanaPrincipalJFrame() throws IOException {
-        initComponents();
-        this.setTitle("D.vcam");
-        this.setLocationRelativeTo(null);
-        //Inicialización de variables
-        fps = false;
-        stats = false;
-        cam = null;
-        hiloDeVideo = null;
-        recording = false;
-        ajustes = new Ajustes(this);
-        DMovimiento = new DeteccionMovimientoJFrame(this);
-        formatoImagen = "bmp";
-        reconfigurar = false;
-        movimientoDetectado = false;
-        Image icon = ImageIO.read(new File("icon.png"));
-        this.setIconImage(icon);
-        comprobarWebCam();
-        refrescarImagen();
-    }
+	public VentanaPrincipalJFrame() throws IOException {
+		initComponents();
+		this.setTitle("D.vcam");
+		this.setLocationRelativeTo(null);
+		// Inicialización de variables
+		fps = false;
+		stats = false;
+		cam = null;
+		hiloDeVideo = null;
+		recording = false;
+		ajustes = new Ajustes(this);
+		DMovimiento = new DeteccionMovimientoJFrame(this);
+		formatoImagen = "bmp";
+		reconfigurar = false;
+		movimientoDetectado = false;
+		Image icon = ImageIO.read(new File("icon.png"));
+		this.setIconImage(icon);
+		comprobarWebCam();
+		refrescarImagen();
+	}
 
-    public void iniciarDeteccion() {
-        deteccionMovimiento = new DetectMotion();
-    }
+	public void iniciarDeteccion() {
+		deteccionMovimiento = new DetectMotion();
+	}
 
-    public void reiniciarDeteccion() {
-        movimientoDetectado = false;
-        deteccionMovimiento.pararDeteccion();
-    }
+	public void reiniciarDeteccion() {
+		movimientoDetectado = false;
+		deteccionMovimiento.pararDeteccion();
+	}
 
-    //Comprueba si hay al menos una webcam disponible. Lanza ventana de error y finaliza ejecución en otro caso
-    private void comprobarWebCam() {
-        try {
-            if (cam == null) {
-                cam = Webcam.getDefault();
-            }
-            if (cam == null) {
-                VentanaError error = new VentanaError("No se detecta ninguna web-cam");
-                error.mostrar();
-                System.exit(0);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	// Comprueba si hay al menos una webcam disponible. Lanza ventana de error y
+	// finaliza ejecución en otro caso
+	private void comprobarWebCam() {
+		try {
+			if (cam == null) {
+				cam = Webcam.getDefault();
+			}
+			if (cam == null) {
+				VentanaError error = new VentanaError("No se detecta ninguna web-cam");
+				error.mostrar();
+				System.exit(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    //Actualiza la ventana de visualización de la webcam
-    private void refrescarImagen() {
-        if (jPanel1 instanceof WebcamPanel) {
-            ((WebcamPanel) jPanel1).stop();
-        }
-        remove(jPanel1);
-        cs = new Dimension(640, 480);
+	// Actualiza la ventana de visualización de la webcam
+	private void refrescarImagen() {
+		if (jPanel1 instanceof WebcamPanel) {
+			((WebcamPanel) jPanel1).stop();
+		}
+		remove(jPanel1);
+		cs = new Dimension(640, 480);
 
-        cam.setImageTransformer(new TransformarImg()); // Transformaciones.
-        cam.setViewSize(cs);
-        cam.open(); // Abre la webcam.
-        wcPanel = new WebcamPanel(cam);
-        wcPanel.setFPSDisplayed(fps);
-        wcPanel.setDisplayDebugInfo(stats);
-        jPanel1 = wcPanel;
-        rebuiltLayout();
-        revalidate();
-        repaint();
-    }
+		cam.setImageTransformer(new TransformarImg()); // Transformaciones.
+		cam.setViewSize(cs);
+		cam.open(); // Abre la webcam.
+		wcPanel = new WebcamPanel(cam);
+		wcPanel.setFPSDisplayed(fps);
+		wcPanel.setDisplayDebugInfo(stats);
+		jPanel1 = wcPanel;
+		rebuiltLayout();
+		revalidate();
+		repaint();
+	}
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+	/**
+	 * This method is called from within the constructor to initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is always
+	 * regenerated by the Form Editor.
+	 */
+	@SuppressWarnings("unchecked")
+	// <editor-fold defaultstate="collapsed" desc="Generated
+	// Code">//GEN-BEGIN:initComponents
+	private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+		jButton1 = new javax.swing.JButton();
+		jPanel1 = new javax.swing.JPanel();
+		jButton3 = new javax.swing.JButton();
+		jButton4 = new javax.swing.JButton();
+		jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Cerrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+		jButton1.setText("Cerrar");
+		jButton1.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jButton1ActionPerformed(evt);
+			}
+		});
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+		jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 961, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 422, Short.MAX_VALUE)
-        );
+		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+		jPanel1.setLayout(jPanel1Layout);
+		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGap(0, 961, Short.MAX_VALUE));
+		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGap(0, 422, Short.MAX_VALUE));
 
-        jButton3.setText("Foto");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+		jButton3.setText("Foto");
+		jButton3.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jButton3ActionPerformed(evt);
+			}
+		});
 
-        jButton4.setText("Video");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
+		jButton4.setText("Video");
+		jButton4.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jButton4ActionPerformed(evt);
+			}
+		});
 
-        jButton2.setText("Ajustes");
-        jButton2.setMaximumSize(new java.awt.Dimension(55, 23));
-        jButton2.setMinimumSize(new java.awt.Dimension(55, 23));
-        jButton2.setPreferredSize(new java.awt.Dimension(55, 23));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+		jButton2.setText("Ajustes");
+		jButton2.setMaximumSize(new java.awt.Dimension(55, 23));
+		jButton2.setMinimumSize(new java.awt.Dimension(55, 23));
+		jButton2.setPreferredSize(new java.awt.Dimension(55, 23));
+		jButton2.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jButton2ActionPerformed(evt);
+			}
+		});
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(85, 85, 85)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup().addContainerGap()
+						.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE,
+								javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addContainerGap())
+				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+						layout.createSequentialGroup().addGap(28, 28, 28)
+								.addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 163,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 163,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGap(85, 85, 85)
+								.addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 163,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGap(100, 100, 100).addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE,
+										163, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGap(29, 29, 29)));
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+				javax.swing.GroupLayout.Alignment.TRAILING,
+				layout.createSequentialGroup().addContainerGap()
+						.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE,
+								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
+												javax.swing.GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap()));
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+		pack();
+	}// </editor-fold>//GEN-END:initComponents
 
-    private void rebuiltLayout() {
-        jPanel1.setOpaque(false);
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
-        jPanel1.setPreferredSize(new java.awt.Dimension(961, 422));
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 961, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 422, Short.MAX_VALUE)
-        );
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(85, 85, 85)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(100, 100, 100)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())
-        );
+	private void rebuiltLayout() {
+		jPanel1.setOpaque(false);
+		jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+		jPanel1.setPreferredSize(new java.awt.Dimension(961, 422));
+		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+		jPanel1.setLayout(jPanel1Layout);
+		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGap(0, 961, Short.MAX_VALUE));
+		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGap(0, 422, Short.MAX_VALUE));
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup().addContainerGap()
+						.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE,
+								javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addContainerGap())
+				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+						layout.createSequentialGroup().addGap(28, 28, 28)
+								.addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 163,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 163,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGap(85, 85, 85)
+								.addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 163,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGap(100, 100, 100).addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE,
+										163, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGap(29, 29, 29)));
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+				javax.swing.GroupLayout.Alignment.TRAILING,
+				layout.createSequentialGroup().addContainerGap()
+						.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE,
+								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 32,
+												javax.swing.GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap()));
 
-        pack();
-    }
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-        System.exit(0);
-    }//GEN-LAST:event_jButton1ActionPerformed
+		pack();
+	}
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        String nombre = String.format("captura-%d.jpg", System.currentTimeMillis());
-        WebcamUtils.capture(cam, nombre, formatoImagen);
-    }//GEN-LAST:event_jButton3ActionPerformed
+	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
+		// TODO add your handling code here:
+		this.dispose();
+		System.exit(0);
+	}// GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        if (!recording) {
-            recording = true;
-            hiloDeVideo = new hiloVideo(cam);
-            Thread th = new Thread(hiloDeVideo);
-            th.start();
-            jButton4.setText("Parar");
-        } else {
-            jButton4.setText("Video");
-            hiloDeVideo.parar();
-            recording = false;
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
+	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton3ActionPerformed
+		// TODO add your handling code here:
+		String nombre = String.format("captura-%d.jpg", System.currentTimeMillis());
+		WebcamUtils.capture(cam, nombre, formatoImagen);
+	}// GEN-LAST:event_jButton3ActionPerformed
 
-    /**
-     * Cambia la cam que se está usando
-     *
-     * @param _cam: Cam a usar
-     */
-    public void setCam(String _cam) {
-        if (_cam != cam.getName()) {
-            List<Webcam> list = Webcam.getWebcams();
-            cam.close();
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getName() == _cam) {
-                    cam = list.get(i);
-                }
-            }
-        }
-        comprobarWebCam();
-        refrescarImagen();
-    }
+	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton4ActionPerformed
+		// TODO add your handling code here:
+		if (!recording) {
+			recording = true;
+			hiloDeVideo = new hiloVideo(cam);
+			Thread th = new Thread(hiloDeVideo);
+			th.start();
+			jButton4.setText("Parar");
+		} else {
+			jButton4.setText("Video");
+			hiloDeVideo.parar();
+			recording = false;
+		}
+	}// GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        ajustes.setCamActual(cam);
-        ajustes.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+	/**
+	 * Cambia la cam que se está usando
+	 *
+	 * @param _cam: Cam a usar
+	 */
+	public void setCam(String _cam) {
+		if (_cam != cam.getName()) {
+			List<Webcam> list = Webcam.getWebcams();
+			cam.close();
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).getName() == _cam) {
+					cam = list.get(i);
+				}
+			}
+		}
+		comprobarWebCam();
+		refrescarImagen();
+	}
 
-    /**
-     * Cambia el formato en el que se guardará la foto
-     *
-     * @param form nombre del formato
-     */
-    public void setFormatoImagen(String form) {
-        this.formatoImagen = form;
-    }
+	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
+		// TODO add your handling code here:
+		ajustes.setCamActual(cam);
+		ajustes.setVisible(true);
+	}// GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * Muestra/oculta los FPS de captura
-     *
-     * @param action booleano que activa/desactiva los fps
-     */
-    public void mostrarFPS(boolean action) {
-        fps = action;
-        wcPanel.setFPSDisplayed(fps);
-    }
+	/**
+	 * Cambia el formato en el que se guardará la foto
+	 *
+	 * @param form nombre del formato
+	 */
+	public void setFormatoImagen(String form) {
+		this.formatoImagen = form;
+	}
 
-    /**
-     * Muestra/oculta datos adicionales sobre la captura
-     *
-     * @param action booleano que activa/desactiva los fps
-     */
-    public void mostrarEstadisticas(boolean action) {
-        stats = action;
-        wcPanel.setDisplayDebugInfo(stats);
-    }
+	/**
+	 * Muestra/oculta los FPS de captura
+	 *
+	 * @param action booleano que activa/desactiva los fps
+	 */
+	public void mostrarFPS(boolean action) {
+		fps = action;
+		wcPanel.setFPSDisplayed(fps);
+	}
 
-    /**
-     * Inserta un marco en la ventana de visualización
-     *
-     * @param marco nombre del marco que se desea insertar
-     */
-    public void insertarMarco(String marco) {
-        // Se aplica marco si la cam está activa ( y si hay alguno seleccionado (mas adelante) y se desactiva en caso contrario
-        if (cam != null && !"Ninguno".equals(marco)) {
-            ((TransformarImg) cam.getImageTransformer()).setTemplate(marco + ".png");
-        } else {
-            ((TransformarImg) cam.getImageTransformer()).setTemplate(null);
-        }
-    }
+	/**
+	 * Muestra/oculta datos adicionales sobre la captura
+	 *
+	 * @param action booleano que activa/desactiva los fps
+	 */
+	public void mostrarEstadisticas(boolean action) {
+		stats = action;
+		wcPanel.setDisplayDebugInfo(stats);
+	}
 
-    public void insertarFiltro(int filtro) {
-        // Se aplica filtro si la cam está activa ( y si hay alguno seleccionado (mas adelante) y se desactiva en caso contrario
-        if (cam != null && !"Ninguno".equals(filtro)) {
-            ((TransformarImg) cam.getImageTransformer()).setFilter(filtro);
-        } else {
-            ((TransformarImg) cam.getImageTransformer()).setFilter(0);
-        }
-    }
+	/**
+	 * Inserta un marco en la ventana de visualización
+	 *
+	 * @param marco nombre del marco que se desea insertar
+	 */
+	public void insertarMarco(String marco) {
+		// Se aplica marco si la cam está activa ( y si hay alguno seleccionado (mas
+		// adelante) y se desactiva en caso contrario
+		if (cam != null && !"Ninguno".equals(marco)) {
+			((TransformarImg) cam.getImageTransformer()).setTemplate(marco + ".png");
+		} else {
+			if (cam != null)
+				((TransformarImg) cam.getImageTransformer()).setTemplate(null);
+		}
+	}
 
-    public class DetectMotion implements WebcamMotionListener {
+	public void insertarFiltro(int filtro) {
+		// Se aplica filtro si la cam está activa ( y si hay alguno seleccionado (mas
+		// adelante) y se desactiva en caso contrario
+		if (cam != null) {
+			((TransformarImg) cam.getImageTransformer()).setFilter(filtro);
+		} else {
+			if (cam != null)
+				((TransformarImg) cam.getImageTransformer()).setFilter(0);
+		}
+	}
 
-        WebcamMotionDetector detector = new WebcamMotionDetector(cam);
-        boolean detectando;
+	public class DetectMotion implements WebcamMotionListener {
 
-        public DetectMotion() {
-            detector.setInterval(500); // one check per 500 ms
-            detector.addMotionListener(this);
-            detector.start();
-            detectando = true;
-        }
+		WebcamMotionDetector detector = new WebcamMotionDetector(cam);
+		boolean detectando;
 
-        @Override
-        public void motionDetected(WebcamMotionEvent wme) {
-            if (movimientoDetectado = true && detectando) {
-                DMovimiento.detectarMov();
-                movimientoDetectado = false;
-                detectando = false;
-                recording = true;
-                hiloDeVideo = new hiloVideo(cam);
-                Thread th = new Thread(hiloDeVideo);
-                th.start();
-                jButton4.setText("Parar");
-            }
-        }
+		public DetectMotion() {
+			detector.setInterval(500); // one check per 500 ms
+			detector.addMotionListener(this);
+			detector.start();
+			detectando = true;
+		}
 
-        public void pararDeteccion() {
-            jButton4.setText("Video");
-            hiloDeVideo.parar();
-            recording = false;
-        }
-    }
+		@Override
+		public void motionDetected(WebcamMotionEvent wme) {
+			DMovimiento.detectarMov();
+			movimientoDetectado = false;
+			detectando = false;
+			recording = true;
+			hiloDeVideo = new hiloVideo(cam);
+			Thread th = new Thread(hiloDeVideo);
+			th.start();
+			jButton4.setText("Parar");
+		}
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipalJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipalJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipalJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipalJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+		public void pararDeteccion() {
+			jButton4.setText("Video");
+			hiloDeVideo.parar();
+			recording = false;
+		}
+	}
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                // new VentanaPrincipalJFrame().setVisible(true);
-            }
-        });
-    }
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String args[]) {
+		/* Set the Nimbus look and feel */
+		// <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+		// (optional) ">
+		/*
+		 * If Nimbus (introduced in Java SE 6) is not available, stay with the default
+		 * look and feel. For details see
+		 * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+		 */
+		try {
+			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					javax.swing.UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (ClassNotFoundException ex) {
+			java.util.logging.Logger.getLogger(VentanaPrincipalJFrame.class.getName())
+					.log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (InstantiationException ex) {
+			java.util.logging.Logger.getLogger(VentanaPrincipalJFrame.class.getName())
+					.log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (IllegalAccessException ex) {
+			java.util.logging.Logger.getLogger(VentanaPrincipalJFrame.class.getName())
+					.log(java.util.logging.Level.SEVERE, null, ex);
+		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+			java.util.logging.Logger.getLogger(VentanaPrincipalJFrame.class.getName())
+					.log(java.util.logging.Level.SEVERE, null, ex);
+		}
+		// </editor-fold>
+		// </editor-fold>
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JPanel jPanel1;
-    // End of variables declaration//GEN-END:variables
+		/* Create and display the form */
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			public void run() {
+			}
+		});
+	}
+
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JButton jButton1;
+	private javax.swing.JButton jButton2;
+	private javax.swing.JButton jButton3;
+	private javax.swing.JButton jButton4;
+	private javax.swing.JPanel jPanel1;
+	// End of variables declaration//GEN-END:variables
 }
